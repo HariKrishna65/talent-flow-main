@@ -100,7 +100,7 @@ Project config:
 ## Credits
 
 - Built with **React**, **Vite**, **Dexie**, **Radix UI**, **Tailwind CSS**, and **msw**.
-- Engineer with ❤️ by [Your Name or Company]
+
 
 ---
 
