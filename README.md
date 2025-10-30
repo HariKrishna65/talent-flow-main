@@ -1,132 +1,109 @@
-TALENT-FLOW
+# TalentFlow
 
-Overview
-- Talent-Flow is a React + Vite + TypeScript application for managing jobs, candidates, and job assessments.
-- It includes HR tools to create and manage assessments and a candidate flow to attempt and submit assessments.
+TalentFlow is a modern, feature-rich hiring management platform designed to streamline the recruitment process for HR teams and offer a seamless application experience to candidates. Built with **React**, **Vite**, **Dexie (IndexedDB for local storage)**, and a modern component/UI toolkit powered by **Tailwind CSS** & **Radix UI**.
 
-Tech Stack
-- React 18, TypeScript, Vite 5
-- React Router v6
-- Dexie (IndexedDB) for local persistence
-- shadcn/ui (Radix UI) + Tailwind CSS
-- React Query (TanStack Query) for client-side data fetching/cache (light usage)
+---
 
-Getting Started
-Prerequisites
-- Node.js >= 18
-- npm (or pnpm/yarn)
+## Features
 
-Install
+- **Role-Based Access:** Dedicated HR and Candidate portals, each with relevant dashboards and capabilities.
+- **Job Management:** Create, edit, archive, and reorder job listings.
+- **Candidate Tracking:**
+  - List, search, and filter candidates by stage and job.
+  - Kanban pipeline board — drag-and-drop candidates between stages (Applied, Screening, Tech, Offer, Hired, Rejected).
+  - Candidate profiles with contact info, timeline history, and notes.
+- **Assessment Management:** Build, assign, and edit job assessments (multi-section, multiple question types).
+- **Application Flow:** Candidates can apply to jobs and attempt dedicated assessments.
+- **Mock API & Local Persistence:** Uses **msw** and **Dexie** for instant, persistent local operation — _no backend server needed_.
+- **Beautiful Responsive UI:** Built with custom UI primitives, dark mode support, and consistent styling.
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18+ recommended)
+- npm, yarn, or bun
+
+### Installation
+
 ```bash
+# Install dependencies
 npm install
-# or
-pnpm install
-```
 
-Run the app (development)
-```bash
+# Start the development server
 npm run dev
 ```
-This starts Vite and shows a local URL (typically http://localhost:5173). Open it in your browser.
 
-Build for production
-```bash
-npm run build
-npm run preview  # serve the production build locally
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## Project Structure
+
+```
+📂 public/
+  ├─ mockServiceWorker.js    # MSW for intercepting API requests
+  ├─ robots.txt              # SEO config
+
+📂 src/
+  ├─ assets/                 # Static assets (e.g., hero images)
+  ├─ components/             # UI components and domain logic
+  │    ├─ ui/                # Design system (button, card, form, sidebar, etc.)
+  ├─ contexts/               # React Contexts (auth, etc.)
+  ├─ hooks/                  # Reusable React hooks
+  ├─ lib/
+  │    ├─ db.js              # Dexie database schema
+  │    ├─ mock-api.js        # Mock backend API logic (msw handlers)
+  │    ├─ seed-data.js       # DB seeder (random jobs/candidates/assessments)
+  │    └─ utils.js           # Utility functions (className merging, etc.)
+  ├─ pages/                  # Route-level components (Jobs, Candidates, Assessments, etc.)
+  ├─ App.jsx                 # App endpoints & route structure
+  ├─ main.jsx                # App entry, worker/bootstrap logic
+  ├─ index.css, App.css      # Main styles
+
+Project config:
+  ├─ package.json, vite.config.js     # Tooling/bundler config
+  ├─ tailwind.config.js, postcss.config.js # Tailwind setup
+  ├─ tsconfig*.json                   # TypeScript config files
 ```
 
-Available Scripts
-- npm run dev: Start the Vite dev server
-- npm run build: Build production assets
-- npm run build:dev: Development-mode build
-- npm run preview: Preview the build locally
-- npm run lint: Run ESLint
+---
 
-Project Structure (key paths)
-- src/
-  - main.tsx: Vite React entry
-  - App.tsx: App routes and protected routing
-  - contexts/AuthContext.tsx: Simple auth with roles (‘hr’ or ‘candidate’)
-  - lib/db.ts: Dexie database and types (jobs, assessments, responses, etc.)
-  - components/ui/*: UI primitives
-  - components/AssessmentPreview.tsx: Live preview of assessment questions
-  - pages/
-    - Index.tsx: Landing/login
-    - Jobs.tsx, JobDetails.tsx: Job listings and details
-    - Assessments.tsx: List jobs + assessment actions
-    - CreateAssignment.tsx: HR-create workflow for assessments
-    - AssessmentBuilder.tsx: HR edit workflow per job
-    - AttemptAssessment.tsx: Candidate assessment attempt page
+## Usage & Roles
 
-Authentication & Roles
-- The app uses a lightweight, in-browser auth context.
-- Login at the landing page and choose a role:
-  - hr: Can create and edit assessments.
-  - candidate: Can view available assessments and attempt them.
+- **HR Users:** Can manage jobs/candidates, create & modify assessments, track applicant progress, and move candidates through the pipeline.
+- **Candidates:** Can browse/apply to jobs, attempt assigned assessments, and review their progress.
+- **Login:** Simple in-browser (no backend auth). Select HR or Candidate on the home page.
 
-Routing (high level)
-- /: Index (login/select role)
-- /assessments: List of jobs with assessment status
-- /assessments/create: HR – create a new assignment
-- /assessments/:jobId/builder: HR – edit assessment for a specific job
-- /assessments/:jobId/attempt: Candidate – attempt assessment for a specific job
+---
 
-Assessments: How it works
-Data Model (simplified) – see src/lib/db.ts
-- Assessment: { id, jobId, sections: Section[], createdAt }
-- Section: { id, title, questions: Question[] }
-- Question: { id, type, text, required?, options?, minValue?, maxValue?, maxLength?, conditionalOn? }
-- AssessmentResponse: { id, assessmentId, candidateId, answers, submittedAt }
+## Key Functionality Overview
 
-HR Flow
-1) Navigate to Assessments → Create New Assignment (/assessments/create)
-2) Select a Job. The form generates job-related starter questions (you can edit/add/remove).
-3) Save the assessment. This persists to IndexedDB via Dexie.
-4) Optionally refine using the Builder (/assessments/:jobId/builder).
+- **Jobs (`/jobs`):** All job opportunities. HR can add, update, archive, and reorder jobs. Candidates can browse and show interest.
+- **Candidates (`/candidates`):** Pipeline of applicants. Filter/search, view detailed profiles, view application timelines, and manage notes.
+- **Kanban Board (`/candidates/kanban`):** Visual pipeline for moving candidates between recruiting stages.
+- **Assessments (`/assessments`):** HR can create and assign assessments per job, customize sections/questions. Candidates can access and attempt assessments.
+- **Persistence:** All changes are stored in your browser (IndexedDB); the "mock API" makes the app feel like a real backend exists.
 
-Candidate Flow
-1) Navigate to Assessments as a candidate.
-2) Click “Attempt Assessment” on a job that has an assessment.
-3) You will be redirected to /assessments/:jobId/attempt where all sections/questions are rendered.
-4) Validation enforces required fields, numeric ranges, and max lengths.
-5) Conditional questions appear based on previous answers when configured.
-6) Submit to save an AssessmentResponse in IndexedDB and return to the Assessments page.
+---
 
-Question Types
-- short-text: Single-line input; supports optional maxLength.
-- long-text: Multi-line textarea; supports optional maxLength.
-- single-choice: Radio buttons from options.
-- multi-choice: Checkbox list from options.
-- numeric: Number input with optional minValue/maxValue.
-- file-upload: UI stub included; no actual file persistence implemented.
+## Customization & Extensibility
 
-Persistence
-- All data is stored in the browser using IndexedDB via Dexie (see src/lib/db.ts).
-- This is suitable for demos and local development. For production use, replace with a real backend/API and server-side storage.
+- **UI Components:** Check `src/components/ui/` for all generic reusable UI.
+- **Auth & Routing:** See `src/contexts/AuthContext.jsx` and `src/App.jsx` for user flows and role protection.
+- **Data/Backend Simulation:** All requests are mocked via `msw` (handled in-browser, see `src/lib/mock-api.js`).
 
-Styling & UI
-- Tailwind CSS is configured in tailwind.config.ts, with utility classes used throughout.
-- Components under src/components/ui are shadcn/ui-based primitives.
+---
 
-Extending or Integrating a Backend
-- Replace Dexie calls in pages and lib/db.ts with API calls.
-- Keep the data shapes consistent with the current types or update types and usage accordingly.
+## Credits
 
-Troubleshooting
-- Blank Page or Module Errors:
-  - Ensure Node >= 18 and that dependencies installed successfully (npm install).
-  - Delete node_modules and lockfile (package-lock.json or pnpm-lock.yaml) and reinstall.
-  - Clear browser cache and IndexedDB for the site if data/state seems stuck.
-- Port Already in Use:
-  - Vite will prompt for a new port or run: npm run dev -- --port=5174
-- Type Errors in Editor:
-  - Ensure TypeScript and @types packages are installed (they are included in devDependencies).
+- Built with **React**, **Vite**, **Dexie**, **Radix UI**, **Tailwind CSS**, and **msw**.
+- Engineer with ❤️ by [Your Name or Company]
 
-Notes
-- This project uses only client-side data storage (IndexedDB). Submissions are not sent to a server.
-- The file upload question type is a non-functional placeholder by default.
+---
 
-License
-- For internal/demo use. Add your preferred license if distributing.
+## License
 
-
+MIT (feel free to adapt)
