@@ -11,7 +11,7 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Base background and text */
-    --background: 30 20% 98%;
+    --background: 230 20% 98%;
     --foreground: 230 10% 10%;
 
     /* Card and popover surfaces */
@@ -20,25 +20,21 @@ All colors MUST be HSL.
 
     --popover: 0 0% 100%;
     --popover-foreground: 230 10% 10%;
-    
-    --primary: 245 60% 50%;     /* Indigo */
+
+    /* 🟣 Indigo Primary (Modern Professional Tone) */
+    --primary: 245 60% 50%;
     --primary-foreground: 0 0% 100%;
-    --accent: 265 83% 58%;   
 
-    /* /* 🟠 TensorFlow Orange (Primary) */
-    /* --primary: 28 90% 55%; */
-    /* --primary-foreground: 0 0% 100%; */ */
-
-    /* Secondary (warm gray / neutral section backgrounds) */
-    --secondary: 30 14% 94%;
+    /* Secondary (soft grayish backgrounds) */
+    --secondary: 230 14% 94%;
     --secondary-foreground: 230 15% 20%;
 
     /* Muted (for subtle icons/text) */
-    --muted: 30 10% 92%;
-    --muted-foreground: 230 5% 45%;
+    --muted: 230 12% 92%;
+    --muted-foreground: 230 8% 45%;
 
-    /* Accent (teal for contrast elements) */
-    --accent: 175 70% 42%;
+    /* Accent (slightly lighter Indigo for hover or highlights) */
+    --accent: 262 83% 58%;
     --accent-foreground: 0 0% 100%;
 
     /* Status colors */
@@ -52,9 +48,9 @@ All colors MUST be HSL.
     --warning-foreground: 0 0% 100%;
 
     /* Borders, inputs, and rings */
-    --border: 30 10% 85%;
-    --input: 30 10% 85%;
-    --ring: 28 90% 55%;
+    --border: 230 10% 85%;
+    --input: 230 10% 85%;
+    --ring: 245 60% 50%;
 
     /* Global radius */
     --radius: 0.75rem;
@@ -62,35 +58,35 @@ All colors MUST be HSL.
     /* Sidebar styling */
     --sidebar-background: 230 14% 16%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 28 90% 55%;
+    --sidebar-primary: 245 60% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 175 70% 42%;
+    --sidebar-accent: 262 83% 58%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 230 14% 20%;
-    --sidebar-ring: 28 90% 55%;
+    --sidebar-ring: 245 60% 50%;
   }
 
   /* 🌙 Dark Mode */
   .dark {
-    --background: 230 14% 12%;
+    --background: 235 14% 12%;
     --foreground: 0 0% 100%;
 
-    --card: 230 14% 16%;
+    --card: 235 14% 16%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 230 14% 16%;
+    --popover: 235 14% 16%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 28 90% 60%;
+    --primary: 245 60% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 230 14% 18%;
+    --secondary: 235 14% 18%;
     --secondary-foreground: 0 0% 90%;
 
-    --muted: 230 14% 18%;
+    --muted: 235 14% 18%;
     --muted-foreground: 0 0% 70%;
 
-    --accent: 175 70% 50%;
+    --accent: 262 83% 65%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 70% 50%;
@@ -102,18 +98,18 @@ All colors MUST be HSL.
     --warning: 35 92% 55%;
     --warning-foreground: 0 0% 100%;
 
-    --border: 230 14% 20%;
-    --input: 230 14% 20%;
-    --ring: 28 90% 60%;
+    --border: 235 14% 20%;
+    --input: 235 14% 20%;
+    --ring: 245 60% 60%;
 
-    --sidebar-background: 230 14% 12%;
+    --sidebar-background: 235 14% 12%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 28 90% 60%;
+    --sidebar-primary: 245 60% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 175 70% 45%;
+    --sidebar-accent: 262 83% 65%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 230 14% 20%;
-    --sidebar-ring: 28 90% 60%;
+    --sidebar-border: 235 14% 20%;
+    --sidebar-ring: 245 60% 60%;
   }
 }
 
