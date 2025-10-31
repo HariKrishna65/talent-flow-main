@@ -2,34 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 
+Definition of the design system.
+All colors, gradients, fonts, etc. are defined here.
+All colors MUST be HSL.
+*/
+
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 230 10% 12%;
+    /* Base background and text */
+    --background: 30 20% 98%;
+    --foreground: 230 10% 10%;
 
+    /* Card and popover surfaces */
     --card: 0 0% 100%;
-    --card-foreground: 230 10% 12%;
+    --card-foreground: 230 10% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 230 10% 12%;
+    --popover-foreground: 230 10% 10%;
 
-    /* Purple - main brand tone */
-    --primary: 265 83% 58%;
+    /* 🟠 TensorFlow Orange (Primary) */
+    --primary: 28 90% 55%;
     --primary-foreground: 0 0% 100%;
 
-    /* Soft warm gray for sections / containers */
-    --secondary: 30 12% 94%;
+    /* Secondary (warm gray / neutral section backgrounds) */
+    --secondary: 30 14% 94%;
     --secondary-foreground: 230 15% 20%;
 
-    /* Muted text / subtle icons */
-    --muted: 220 14% 96%;
-    --muted-foreground: 230 8% 45%;
+    /* Muted (for subtle icons/text) */
+    --muted: 30 10% 92%;
+    --muted-foreground: 230 5% 45%;
 
-    /* Teal accent for links, highlights, buttons */
+    /* Accent (teal for contrast elements) */
     --accent: 175 70% 42%;
     --accent-foreground: 0 0% 100%;
 
-    /* Clear semantic colors */
+    /* Status colors */
     --destructive: 0 75% 55%;
     --destructive-foreground: 0 0% 100%;
 
@@ -39,43 +47,44 @@
     --warning: 35 92% 52%;
     --warning-foreground: 0 0% 100%;
 
-    /* Borders, inputs, rings */
-    --border: 220 13% 90%;
-    --input: 220 13% 90%;
-    --ring: 265 83% 58%;
+    /* Borders, inputs, and rings */
+    --border: 30 10% 85%;
+    --input: 30 10% 85%;
+    --ring: 28 90% 55%;
 
-    /* Radius */
+    /* Global radius */
     --radius: 0.75rem;
 
     /* Sidebar styling */
-    --sidebar-background: 235 14% 16%;
-    --sidebar-foreground: 240 10% 95%;
-    --sidebar-primary: 265 83% 58%;
+    --sidebar-background: 230 14% 16%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 28 90% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 175 65% 36%;
+    --sidebar-accent: 175 70% 42%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 235 14% 20%;
-    --sidebar-ring: 265 83% 58%;
+    --sidebar-border: 230 14% 20%;
+    --sidebar-ring: 28 90% 55%;
   }
 
+  /* 🌙 Dark Mode */
   .dark {
-    --background: 235 14% 12%;
-    --foreground: 240 10% 95%;
+    --background: 230 14% 12%;
+    --foreground: 0 0% 100%;
 
-    --card: 235 14% 16%;
-    --card-foreground: 240 10% 95%;
+    --card: 230 14% 16%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 235 14% 16%;
-    --popover-foreground: 240 10% 95%;
+    --popover: 230 14% 16%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 265 83% 65%;
+    --primary: 28 90% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 235 14% 18%;
-    --secondary-foreground: 240 10% 90%;
+    --secondary: 230 14% 18%;
+    --secondary-foreground: 0 0% 90%;
 
-    --muted: 235 14% 18%;
-    --muted-foreground: 240 5% 70%;
+    --muted: 230 14% 18%;
+    --muted-foreground: 0 0% 70%;
 
     --accent: 175 70% 50%;
     --accent-foreground: 0 0% 100%;
@@ -89,18 +98,18 @@
     --warning: 35 92% 55%;
     --warning-foreground: 0 0% 100%;
 
-    --border: 235 14% 20%;
-    --input: 235 14% 20%;
-    --ring: 265 83% 65%;
+    --border: 230 14% 20%;
+    --input: 230 14% 20%;
+    --ring: 28 90% 60%;
 
-    --sidebar-background: 235 14% 12%;
-    --sidebar-foreground: 240 10% 95%;
-    --sidebar-primary: 265 83% 65%;
+    --sidebar-background: 230 14% 12%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 28 90% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 175 65% 36%;
+    --sidebar-accent: 175 70% 45%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 235 14% 20%;
-    --sidebar-ring: 265 83% 65%;
+    --sidebar-border: 230 14% 20%;
+    --sidebar-ring: 28 90% 60%;
   }
 }
 
