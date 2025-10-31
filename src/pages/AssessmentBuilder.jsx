@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/db';
@@ -27,6 +27,12 @@ export default function AssessmentBuilder() {
   );
   const [showPreview, setShowPreview] = useState(false);
 
+  // Keep local builder state in sync when an existing assessment is loaded/updated
+  useEffect(() => {
+    if (existingAssessment?.sections && Array.isArray(existingAssessment.sections)) {
+      setSections(existingAssessment.sections);
+    }
+  }, [existingAssessment]);
   const addSection = () => {
     setSections([...sections, { id: `section-${Date.now()}`, title: 'New Section', questions: [] }]);
   };
@@ -200,7 +206,7 @@ export default function AssessmentBuilder() {
                         value={question.conditionalOn?.questionId || 'none'}
                         onValueChange={(value) => {
                           if (value === 'none') updateQuestion(section.id, question.id, { conditionalOn: undefined });
-                          else updateQuestion(section.id, question.id, { conditionalOn: { questionId: value, expectedValue: '' } });
+                          else updateQuestion(section.id, question.id, { conditionalOn: { questionId: value, operator: 'equals', expectedValue: '' } });
                         }}
                       >
                         <SelectTrigger className="mt-2">
@@ -218,12 +224,27 @@ export default function AssessmentBuilder() {
                         </SelectContent>
                       </Select>
                       {question.conditionalOn && (
-                        <Input
-                          value={question.conditionalOn.expectedValue}
-                          onChange={(e) => updateQuestion(section.id, question.id, { conditionalOn: { ...question.conditionalOn, expectedValue: e.target.value } })}
-                          placeholder="Expected answer"
-                          className="mt-2"
-                        />
+                        <div className="mt-2 grid grid-cols-2 gap-2">
+                          <Select
+                            value={question.conditionalOn.operator || 'equals'}
+                            onValueChange={(op) => updateQuestion(section.id, question.id, { conditionalOn: { ...question.conditionalOn, operator: op } })}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="equals">equals</SelectItem>
+                              <SelectItem value="not-equals">not-equals</SelectItem>
+                              <SelectItem value="contains">contains</SelectItem>
+                              <SelectItem value="one-of">one-of</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Input
+                            value={question.conditionalOn.expectedValue}
+                            onChange={(e) => updateQuestion(section.id, question.id, { conditionalOn: { ...question.conditionalOn, expectedValue: e.target.value } })}
+                            placeholder={question.conditionalOn.operator === 'one-of' ? 'Comma-separated values' : 'Expected value'}
+                          />
+                        </div>
                       )}
                     </div>
                   </div>
