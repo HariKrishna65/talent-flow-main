@@ -1,109 +1,135 @@
-# TalentFlow
+TALENT-FLOW
 
-TalentFlow is a modern, feature-rich hiring management platform designed to streamline the recruitment process for HR teams and offer a seamless application experience to candidates. Built with **React**, **Vite**, **Dexie (IndexedDB for local storage)**, and a modern component/UI toolkit powered by **Tailwind CSS** & **Radix UI**.
+Overview
+- Talent-Flow is a React + Vite single-page application for managing jobs, candidates, and job assessments.
+- It includes HR tools to create and manage assessments and a candidate flow to attempt and submit assessments.
 
----
+Tech Stack
+- React 18, Vite 5 (JavaScript)
+- React Router v6
+- Dexie (IndexedDB) for local persistence
+- MSW (Mock Service Worker) to simulate a backend (API under `/api`)
+- shadcn/ui (Radix UI) + Tailwind CSS
+- TanStack Query (light usage)
 
-## Features
+Getting Started
+Prerequisites
+- Node.js >= 18
+- npm (or pnpm/yarn)
 
-- **Role-Based Access:** Dedicated HR and Candidate portals, each with relevant dashboards and capabilities.
-- **Job Management:** Create, edit, archive, and reorder job listings.
-- **Candidate Tracking:**
-  - List, search, and filter candidates by stage and job.
-  - Kanban pipeline board — drag-and-drop candidates between stages (Applied, Screening, Tech, Offer, Hired, Rejected).
-  - Candidate profiles with contact info, timeline history, and notes.
-- **Assessment Management:** Build, assign, and edit job assessments (multi-section, multiple question types).
-- **Application Flow:** Candidates can apply to jobs and attempt dedicated assessments.
-- **Mock API & Local Persistence:** Uses **msw** and **Dexie** for instant, persistent local operation — _no backend server needed_.
-- **Beautiful Responsive UI:** Built with custom UI primitives, dark mode support, and consistent styling.
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v18+ recommended)
-- npm, yarn, or bun
-
-### Installation
-
+Install
 ```bash
-# Install dependencies
 npm install
+# or
+pnpm install
+```
 
-# Start the development server
+Run the app (development)
+```bash
 npm run dev
 ```
+This starts Vite and shows a local URL (typically http://localhost:5173). Open it in your browser.
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
----
-
-## Project Structure
-
-```
-📂 public/
-  ├─ mockServiceWorker.js    # MSW for intercepting API requests
-  ├─ robots.txt              # SEO config
-
-📂 src/
-  ├─ assets/                 # Static assets (e.g., hero images)
-  ├─ components/             # UI components and domain logic
-  │    ├─ ui/                # Design system (button, card, form, sidebar, etc.)
-  ├─ contexts/               # React Contexts (auth, etc.)
-  ├─ hooks/                  # Reusable React hooks
-  ├─ lib/
-  │    ├─ db.js              # Dexie database schema
-  │    ├─ mock-api.js        # Mock backend API logic (msw handlers)
-  │    ├─ seed-data.js       # DB seeder (random jobs/candidates/assessments)
-  │    └─ utils.js           # Utility functions (className merging, etc.)
-  ├─ pages/                  # Route-level components (Jobs, Candidates, Assessments, etc.)
-  ├─ App.jsx                 # App endpoints & route structure
-  ├─ main.jsx                # App entry, worker/bootstrap logic
-  ├─ index.css, App.css      # Main styles
-
-Project config:
-  ├─ package.json, vite.config.js     # Tooling/bundler config
-  ├─ tailwind.config.js, postcss.config.js # Tailwind setup
-  ├─ tsconfig*.json                   # TypeScript config files
+Build for production
+```bash
+npm run build
+npm run preview  # serve the production build locally
 ```
 
----
+Available Scripts
+- npm run dev: Start the Vite dev server
+- npm run build: Build production assets
+- npm run build:dev: Development-mode build
+- npm run preview: Preview the build locally
+- npm run lint: Run ESLint
 
-## Usage & Roles
+Project Structure (key paths)
+- src/
+  - main.jsx: App bootstrap, starts MSW and seeds IndexedDB
+  - App.jsx: Routes and providers (Auth, Query, Tooltip, Toasters)
+  - contexts/AuthContext.jsx: Simple client auth with roles (`hr` or `candidate`)
+  - lib/db.js: Dexie database (jobs, candidates, timelines, assessments, responses)
+  - lib/mock-api.js: MSW handlers that simulate `/api/*` endpoints backed by Dexie
+  - lib/seed-data.js: Seeds jobs, candidates, and assessments on first run
+  - components/ui/*: UI primitives
+  - components/AssessmentPreview.jsx: Live preview of assessment questions
+  - pages/
+    - Index.jsx: Landing/login
+    - Jobs.jsx, JobDetails.jsx: Job listings and details
+    - Candidates.jsx, CandidatesKanban.jsx, CandidateProfile.jsx: HR candidate tools
+    - Assessments.jsx, CreateAssignment.jsx, AssessmentBuilder.jsx, AttemptAssessment.jsx
 
-- **HR Users:** Can manage jobs/candidates, create & modify assessments, track applicant progress, and move candidates through the pipeline.
-- **Candidates:** Can browse/apply to jobs, attempt assigned assessments, and review their progress.
-- **Login:** Simple in-browser (no backend auth). Select HR or Candidate on the home page.
+Architecture
+- SPA-only frontend. No real server is required for development.
+- Data access flows through MSW handlers in `src/lib/mock-api.js`, which persist to IndexedDB via Dexie in `src/lib/db.js`.
+- Authentication is client-only using `localStorage` via `src/contexts/AuthContext.jsx`. Roles: `hr` and `candidate`.
+- Routing is defined in `src/App.jsx` with `ProtectedRoute` guarding role-based access.
+- Initial data is generated by `src/lib/seed-data.js` and invoked from `src/main.jsx` during app startup.
 
----
+Routing (high level)
+- /: Index (login/select role)
+- /jobs, /jobs/:jobId
+- /candidates, /candidates/kanban, /candidates/:id (HR only)
+- /assessments
+- /assessments/create (HR)
+- /assessments/:jobId/builder (HR)
+- /assessments/:jobId/attempt (Candidate)
 
-## Key Functionality Overview
+Assessments: How it works
+Data Model (simplified) – see `src/lib/db.js`
+- Assessment: { id, jobId, sections: Section[], createdAt }
+- Section: { id, title, questions: Question[] }
+- Question: { id, type, text, required?, options?, minValue?, maxValue?, maxLength? }
+- AssessmentResponse: { id, assessmentId, candidateId, answers, submittedAt }
 
-- **Jobs (`/jobs`):** All job opportunities. HR can add, update, archive, and reorder jobs. Candidates can browse and show interest.
-- **Candidates (`/candidates`):** Pipeline of applicants. Filter/search, view detailed profiles, view application timelines, and manage notes.
-- **Kanban Board (`/candidates/kanban`):** Visual pipeline for moving candidates between recruiting stages.
-- **Assessments (`/assessments`):** HR can create and assign assessments per job, customize sections/questions. Candidates can access and attempt assessments.
-- **Persistence:** All changes are stored in your browser (IndexedDB); the "mock API" makes the app feel like a real backend exists.
+HR Flow
+1) Navigate to Assessments → Create New Assignment (`/assessments/create`).
+2) Select a Job. The form generates job-related starter questions (you can edit/add/remove).
+3) Save the assessment (stored in IndexedDB via Dexie).
+4) Optionally refine using the Builder (`/assessments/:jobId/builder`).
 
----
+Candidate Flow
+1) Navigate to Assessments as a candidate.
+2) Click “Attempt Assessment” on a job that has an assessment.
+3) Complete sections/questions at `/assessments/:jobId/attempt` with validation.
+4) Submit to save an `AssessmentResponse` in IndexedDB.
 
-## Customization & Extensibility
+Styling & UI
+- Tailwind CSS configured in `tailwind.config.js`.
+- Components under `src/components/ui` are shadcn/ui-based primitives.
 
-- **UI Components:** Check `src/components/ui/` for all generic reusable UI.
-- **Auth & Routing:** See `src/contexts/AuthContext.jsx` and `src/App.jsx` for user flows and role protection.
-- **Data/Backend Simulation:** All requests are mocked via `msw` (handled in-browser, see `src/lib/mock-api.js`).
+Extending or Integrating a Backend
+- Replace MSW/Dexie calls with real API requests. Keep data shapes consistent or update types/usage accordingly.
+- Suggested approach: create an API client layer, swap MSW handlers for live endpoints, and migrate persistence out of IndexedDB.
 
----
+Known Issues & Limitations
+- Demo-only auth: Client-side `localStorage` auth meant for demos; not secure for production.
+- MSW simulated failures: `simulateNetwork()` introduces latency and random errors (e.g., ~5% network error). Job reorder endpoint can randomly fail (~10%) to emulate transient issues.
+- IndexedDB persistence: Seeded data persists between reloads; clear browser storage to reset.
+- TypeScript vs JavaScript: The codebase currently uses `.jsx`/`.js` runtime files, though TypeScript tooling is present in devDependencies.
+- File uploads: If surfaced in the UI, uploads are placeholders with no real storage.
+- Performance: Initial seeding creates ~1000 candidates; first load may take slightly longer.
 
-## Credits
+Technical Decisions
+- MSW + Dexie for a realistic local-first demo without requiring a backend.
+- shadcn/ui + Tailwind for rapid, consistent UI development on top of Radix primitives.
+- Role-based routing via a simple `ProtectedRoute` and context-driven auth state.
+- TanStack Query is included for cache/fetch ergonomics but used lightly; most calls are straightforward.
+- Deterministic string IDs in seeders to keep data stable and predictable across sessions (until storage is cleared).
 
-- Built with **React**, **Vite**, **Dexie**, **Radix UI**, **Tailwind CSS**, and **msw**.
+Troubleshooting
+- Blank Page or Module Errors:
+  - Ensure Node >= 18 and dependencies installed successfully (`npm install`).
+  - Delete `node_modules` and lockfile (`package-lock.json` or `pnpm-lock.yaml`) and reinstall.
+  - Clear browser cache and IndexedDB for the site if data/state seems stuck.
+- Port Already in Use:
+  - Use: `npm run dev -- --port=5174`
+- Type Errors in Editor:
+  - TypeScript types are included in devDependencies; editors may show hints even though runtime code is JS.
 
+Notes
+- This project uses only client-side data storage (IndexedDB) during development. Submissions are not sent to a server.
 
----
+License
+- For internal/demo use. Add your preferred license if distributing.
 
-## License
-
-MIT (feel free to adapt)
