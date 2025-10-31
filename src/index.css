@@ -20,10 +20,14 @@ All colors MUST be HSL.
 
     --popover: 0 0% 100%;
     --popover-foreground: 230 10% 10%;
-
-    /* 🟠 TensorFlow Orange (Primary) */
-    --primary: 28 90% 55%;
+    
+    --primary: 245 60% 50%;     /* Indigo */
     --primary-foreground: 0 0% 100%;
+    --accent: 265 83% 58%;   
+
+    /* /* 🟠 TensorFlow Orange (Primary) */
+    /* --primary: 28 90% 55%; */
+    /* --primary-foreground: 0 0% 100%; */ */
 
     /* Secondary (warm gray / neutral section backgrounds) */
     --secondary: 30 14% 94%;
