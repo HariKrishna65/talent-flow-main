@@ -24,15 +24,36 @@ export default function AssessmentPreview({ sections, onClose, jobTitle }) {
 
   const shouldShowQuestion = (question) => {
     if (!question.conditionalOn) return true;
-    const dependentAnswer = answers[question.conditionalOn.questionId];
-    return dependentAnswer === question.conditionalOn.expectedValue;
+    const { questionId, operator = 'equals', expectedValue } = question.conditionalOn;
+    const dependentAnswer = answers[questionId];
+    if (operator === 'equals') return dependentAnswer === expectedValue;
+    if (operator === 'not-equals') return dependentAnswer !== expectedValue;
+    if (operator === 'contains') {
+      if (Array.isArray(dependentAnswer)) return dependentAnswer.includes(expectedValue);
+      if (typeof dependentAnswer === 'string') return (dependentAnswer || '').toLowerCase().includes(String(expectedValue || '').toLowerCase());
+      return false;
+    }
+    if (operator === 'one-of') {
+      const values = String(expectedValue || '')
+        .split(',')
+        .map((v) => v.trim())
+        .filter(Boolean);
+      return values.includes(String(dependentAnswer));
+    }
+    return true;
   };
 
   const validateAnswer = (question) => {
     const answer = answers[question.id];
-    if (question.required && !answer) return 'This field is required';
-    if (question.type === 'numeric' && answer) {
+    if (
+      question.required &&
+      (answer === undefined || answer === null || answer === '' || (Array.isArray(answer) && answer.length === 0))
+    ) {
+      return 'This field is required';
+    }
+    if (question.type === 'numeric' && answer !== undefined && answer !== null && answer !== '') {
       const num = Number(answer);
+      if (Number.isNaN(num)) return 'Please enter a valid number';
       if (question.minValue !== undefined && num < question.minValue) return `Value must be at least ${question.minValue}`;
       if (question.maxValue !== undefined && num > question.maxValue) return `Value must be at most ${question.maxValue}`;
     }
