@@ -2,95 +2,84 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
-Definition of the design system.
-All colors, gradients, fonts, etc. are defined here.
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    /* Base background and text */
-    --background: 230 20% 98%;
-    --foreground: 230 10% 10%;
+    /* Base Background and Text */
+    --background: 220 15% 97%;
+    --foreground: 230 15% 10%;
 
-    /* Card and popover surfaces */
+    /* Card & Popovers */
     --card: 0 0% 100%;
-    --card-foreground: 230 10% 10%;
+    --card-foreground: 230 15% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 230 10% 10%;
+    --popover-foreground: 230 15% 10%;
 
-    /* 🟣 Indigo Primary (Modern Professional Tone) */
-    --primary: 245 60% 50%;
+    /* 🎨 Mixed Professional Palette */
+    --primary: 222 90% 55%; /* Deep blue */
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary (soft grayish backgrounds) */
-    --secondary: 230 14% 94%;
-    --secondary-foreground: 230 15% 20%;
+    --secondary: 275 80% 60%; /* Subtle violet for secondary UI */
+    --secondary-foreground: 0 0% 100%;
 
-    /* Muted (for subtle icons/text) */
-    --muted: 230 12% 92%;
-    --muted-foreground: 230 8% 45%;
-
-    /* Accent (slightly lighter Indigo for hover or highlights) */
-    --accent: 262 83% 58%;
+    --accent: 182 70% 45%; /* Teal accent (hover or highlights) */
     --accent-foreground: 0 0% 100%;
 
-    /* Status colors */
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 0 0% 100%;
+    /* Neutral Supporting Colors */
+    --muted: 220 10% 92%;
+    --muted-foreground: 230 10% 45%;
 
+    /* Status Colors */
     --success: 145 63% 42%;
     --success-foreground: 0 0% 100%;
 
     --warning: 35 92% 52%;
     --warning-foreground: 0 0% 100%;
 
-    /* Borders, inputs, and rings */
-    --border: 230 10% 85%;
-    --input: 230 10% 85%;
-    --ring: 245 60% 50%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    /* Global radius */
+    /* Borders and Inputs */
+    --border: 220 10% 85%;
+    --input: 220 10% 85%;
+    --ring: 222 90% 55%;
+
+    /* Corners */
     --radius: 0.75rem;
 
-    /* Sidebar styling */
-    --sidebar-background: 230 14% 16%;
+    /* Sidebar Styling */
+    --sidebar-background: 228 15% 16%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 245 60% 50%;
+    --sidebar-primary: 222 90% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 262 83% 58%;
+    --sidebar-accent: 275 80% 60%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 230 14% 20%;
-    --sidebar-ring: 245 60% 50%;
+    --sidebar-border: 228 15% 20%;
+    --sidebar-ring: 182 70% 45%;
   }
 
   /* 🌙 Dark Mode */
   .dark {
-    --background: 235 14% 12%;
+    --background: 230 15% 12%;
     --foreground: 0 0% 100%;
 
-    --card: 235 14% 16%;
+    --card: 230 15% 16%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 235 14% 16%;
+    --popover: 230 15% 16%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 245 60% 60%;
+    --primary: 222 85% 65%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 235 14% 18%;
-    --secondary-foreground: 0 0% 90%;
+    --secondary: 275 80% 65%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 235 14% 18%;
-    --muted-foreground: 0 0% 70%;
-
-    --accent: 262 83% 65%;
+    --accent: 182 70% 50%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
+    --muted: 230 15% 20%;
+    --muted-foreground: 0 0% 70%;
 
     --success: 145 63% 45%;
     --success-foreground: 0 0% 100%;
@@ -98,18 +87,21 @@ All colors MUST be HSL.
     --warning: 35 92% 55%;
     --warning-foreground: 0 0% 100%;
 
-    --border: 235 14% 20%;
-    --input: 235 14% 20%;
-    --ring: 245 60% 60%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --sidebar-background: 235 14% 12%;
+    --border: 230 15% 20%;
+    --input: 230 15% 20%;
+    --ring: 222 85% 65%;
+
+    --sidebar-background: 230 15% 10%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 245 60% 60%;
+    --sidebar-primary: 222 85% 65%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 262 83% 65%;
+    --sidebar-accent: 275 80% 65%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 235 14% 20%;
-    --sidebar-ring: 245 60% 60%;
+    --sidebar-border: 230 15% 20%;
+    --sidebar-ring: 182 70% 50%;
   }
 }
 
